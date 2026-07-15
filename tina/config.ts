@@ -1,19 +1,14 @@
 import { defineConfig } from "tinacms";
 
-// TinaCMS reads/writes the JSON files in /content and commits+pushes them
-// to GitHub on save, which triggers Vercel to redeploy automatically.
-//
-// To connect this to TinaCloud (needed for editing on the LIVE site,
-// not just localhost), set these in .env.local / Vercel env vars:
-//   NEXT_PUBLIC_TINA_CLIENT_ID
-//   TINA_TOKEN
-// Get both by running `npx tinacms init` -> "Connect to Tina Cloud",
-// or from app.tina.io after creating a free project there.
 export default defineConfig({
-  branch: process.env.NEXT_PUBLIC_TINA_BRANCH || process.env.HEAD || "main",
+  // UPDATED: Added Vercel's native git branch variable check
+  branch:
+    process.env.VERCEL_GIT_COMMIT_REF ||
+    process.env.NEXT_PUBLIC_TINA_BRANCH ||
+    process.env.HEAD ||
+    "main",
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "",
   token: process.env.TINA_TOKEN,
-
   build: {
     outputFolder: "admin",
     publicFolder: "public",
@@ -24,7 +19,6 @@ export default defineConfig({
       publicFolder: "public",
     },
   },
-
   schema: {
     collections: [
       {
@@ -52,8 +46,7 @@ export default defineConfig({
                 type: "string",
                 name: "workstationImage",
                 label: "Hero Workstation Image URL",
-                description:
-                  "Paste any image URL (Pexels, Unsplash, or your own hosted photo) to swap the hero visual — no code changes needed.",
+                description: "Paste any image URL (Pexels, Unsplash, or your own hosted photo) to swap the hero visual — no code changes needed.",
               },
               { type: "string", name: "workstationImageAlt", label: "Workstation Image Alt Text" },
             ],
