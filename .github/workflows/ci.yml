@@ -1,0 +1,23 @@
+name: CI
+
+# Vercel's own GitHub integration handles deployment automatically on
+# every push (see README "Connect GitHub to Vercel"). This workflow just
+# catches lint/type errors before they reach production.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+      - run: npx eslint .
+      - run: npx tsc --noEmit

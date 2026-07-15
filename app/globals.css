@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: var(--font-display-loaded), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-body-loaded), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-loaded), ui-monospace, SFMono-Regular, monospace;
+
+  /* Light theme */
+  --color-bg: #f8f8fc;
+  --color-bg-soft: #eeedf9;
+  --color-surface: rgba(255, 255, 255, 0.72);
+  --color-surface-solid: #ffffff;
+  --color-border: rgba(99, 60, 220, 0.10);
+  --color-ink: #15152b;
+  --color-ink-muted: #5c5a75;
+  --color-accent-from: #7c3aed;
+  --color-accent-to: #2563eb;
+  --color-accent-solid: #6d28d9;
+  --color-accent-tint: rgba(124, 58, 237, 0.10);
+  --color-glow: rgba(124, 58, 237, 0.16);
+  --shadow-soft: 0 1px 2px rgba(23, 20, 60, 0.04), 0 12px 32px -12px rgba(60, 40, 140, 0.14);
+
+  /* Dark theme */
+  --color-dark-bg: #08070f;
+  --color-dark-bg-soft: #0f0d1c;
+  --color-dark-surface: rgba(255, 255, 255, 0.045);
+  --color-dark-surface-solid: #12101f;
+  --color-dark-border: rgba(255, 255, 255, 0.09);
+  --color-dark-ink: #f4f3fb;
+  --color-dark-ink-muted: #a5a2c4;
+  --color-dark-accent-from: #a78bfa;
+  --color-dark-accent-to: #60a5fa;
+  --color-dark-accent-solid: #a78bfa;
+  --color-dark-accent-tint: rgba(167, 139, 250, 0.12);
+  --color-dark-glow: rgba(139, 92, 246, 0.35);
+  --shadow-dark-soft: 0 1px 2px rgba(0, 0, 0, 0.2), 0 20px 48px -16px rgba(0, 0, 0, 0.55);
+}
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+* {
+  border-color: var(--color-border);
+}
+.dark * {
+  border-color: var(--color-dark-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: var(--color-dark-bg);
+  color: var(--color-dark-ink);
+}
+
+::selection {
+  background-color: var(--color-accent-tint);
+  color: var(--color-accent-solid);
+}
+.dark ::selection {
+  background-color: var(--color-dark-accent-tint);
+  color: var(--color-dark-accent-solid);
+}
+
+/* ---- Design system utility classes (used across all sections) ---- */
+
+/* Gradient text, the site's signature accent treatment */
+.text-gradient {
+  background-image: linear-gradient(120deg, var(--color-accent-from), var(--color-accent-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dark .text-gradient {
+  background-image: linear-gradient(120deg, var(--color-dark-accent-from), var(--color-dark-accent-to));
+}
+
+/* Glass card, the primary surface treatment throughout the site */
+.glass-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-soft);
+}
+.dark .glass-card {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-border);
+  box-shadow: var(--shadow-dark-soft);
+}
+
+/* Gradient-glow border ring that appears on hover, the site's signature
+   interactive cue for every clickable card (projects, certs, skills) */
+.glow-ring {
+  position: relative;
+  isolation: isolate;
+}
+.glow-ring::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--color-accent-from), var(--color-accent-to));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+.glow-ring:hover::before {
+  opacity: 1;
+}
+.dark .glow-ring::before {
+  background: linear-gradient(135deg, var(--color-dark-accent-from), var(--color-dark-accent-to));
+}
+
+/* Soft ambient glow used behind hero/section accents */
+.ambient-glow {
+  background: radial-gradient(closest-side, var(--color-glow), transparent);
+  filter: blur(60px);
+}
+.dark .ambient-glow {
+  background: radial-gradient(closest-side, var(--color-dark-glow), transparent);
+}
+
+.gradient-button {
+  background-image: linear-gradient(120deg, var(--color-accent-from), var(--color-accent-to));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(20px, -30px) rotate(6deg); }
+}
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+@keyframes float-slower {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-25px, 25px) rotate(-8deg); }
+}
+.animate-float-slower {
+  animation: float-slower 13s ease-in-out infinite;
+}

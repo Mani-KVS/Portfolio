@@ -1,0 +1,26 @@
+{
+  "entries": [
+    {
+      "institution": "Vellore Institute of Technology – AP (VIT-AP University)",
+      "degree": "Integrated M.Tech in Software Engineering",
+      "location": "Amaravati, Andhra Pradesh",
+      "period": "Nov 2022 – Jul 2027",
+      "score": "CGPA: 8.04 / 10.0",
+      "isCurrent": true
+    },
+    {
+      "institution": "Narayana Junior College",
+      "degree": "Intermediate — Mathematics, Physics, Chemistry (MPC)",
+      "location": "Chirala, Andhra Pradesh",
+      "period": "2020 – 2022",
+      "score": "Percentage: 92.0%"
+    },
+    {
+      "institution": "Sundeep English Medium High School",
+      "degree": "Secondary School Certificate (SSC)",
+      "location": "Chirala, Andhra Pradesh",
+      "period": "2020",
+      "score": "Percentage: 99.6%"
+    }
+  ]
+}

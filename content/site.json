@@ -1,0 +1,66 @@
+{
+  "hero": {
+    "name": "Konjeti Venkata Sai Manikanta",
+    "role": "Software Engineering Student",
+    "tagline": "I build fullstack web apps and AI-powered systems — from disease-prediction models to marketplace platforms.",
+    "profileImage": "/images/profile.jpg",
+    "resumeUrl": "/resume/resume.pdf",
+    "location": "Chirala, Andhra Pradesh, India",
+    "workstationImage": "https://images.pexels.com/photos/30469973/pexels-photo-30469973.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "workstationImageAlt": "Modern dual-monitor developer workstation with mechanical keyboard, bathed in purple and blue ambient light"
+  },
+  "stats": [
+    {
+      "label": "LeetCode Problems",
+      "value": 50,
+      "suffix": "+",
+      "icon": "Code2"
+    },
+    {
+      "label": "CodeChef Problems",
+      "value": 70,
+      "suffix": "+",
+      "icon": "Trophy"
+    },
+    {
+      "label": "Projects Shipped",
+      "value": 5,
+      "suffix": "+",
+      "icon": "Rocket"
+    },
+    {
+      "label": "Open Backlogs",
+      "value": 0,
+      "suffix": "",
+      "icon": "CheckCircle2"
+    }
+  ],
+  "about": {
+    "intro": "I'm an Integrated M.Tech Software Engineering student at VIT-AP University, graduating in 2027, with a CGPA of 8.04/10. I enjoy turning ideas into working software — from machine learning models that predict disease to full marketplace platforms with defect-detection AI baked in.",
+    "objective": "Looking for a Software Development Engineer role where I can apply my skills in Java, Python, and full-stack web development to build reliable, scalable products — and keep learning from engineers better than me.",
+    "interests": [
+      "Full-Stack Web Development",
+      "Machine Learning & Computer Vision",
+      "Competitive Programming",
+      "System Design"
+    ],
+    "strengths": [
+      "Strong problem-solving and analytical skills",
+      "Hands-on experience building full-stack and ML applications",
+      "Quick learner with a deep interest in Java technologies",
+      "Excellent teamwork, communication, and debugging skills"
+    ]
+  },
+  "contact": {
+    "email": "konjetivenkatasaimanikanta@gmail.com",
+    "phone": "+91-6302245389",
+    "linkedin": "https://linkedin.com/in/your-linkedin-handle",
+    "github": "https://github.com/Mani-KVS",
+    "leetcode": "https://leetcode.com/u/manikanta_8999/"
+  },
+  "seo": {
+    "title": "Konjeti Venkata Sai Manikanta — Software Engineer",
+    "description": "Portfolio of Konjeti Venkata Sai Manikanta, a Software Engineering student building fullstack and ML-powered applications.",
+    "keywords": "software engineer, full stack developer, machine learning, VIT-AP, portfolio"
+  }
+}

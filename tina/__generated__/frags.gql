@@ -1,0 +1,102 @@
+fragment SiteParts on Site {
+  __typename
+  hero {
+    __typename
+    name
+    role
+    tagline
+    profileImage
+    resumeUrl
+    location
+    workstationImage
+    workstationImageAlt
+  }
+  stats {
+    __typename
+    label
+    value
+    suffix
+    icon
+  }
+  about {
+    __typename
+    intro
+    objective
+    interests
+    strengths
+  }
+  contact {
+    __typename
+    email
+    phone
+    linkedin
+    github
+    leetcode
+  }
+  seo {
+    __typename
+    title
+    description
+    keywords
+  }
+}
+
+fragment SkillsParts on Skills {
+  __typename
+  categories {
+    __typename
+    id
+    title
+    icon
+    skills
+  }
+}
+
+fragment EducationParts on Education {
+  __typename
+  entries {
+    __typename
+    institution
+    degree
+    location
+    period
+    score
+    isCurrent
+  }
+}
+
+fragment ExperienceParts on Experience {
+  __typename
+  entries {
+    __typename
+    role
+    organization
+    period
+    location
+    description
+    isCurrent
+  }
+}
+
+fragment ProjectsParts on Projects {
+  __typename
+  name
+  image
+  description
+  technologies
+  github
+  demo
+  period
+  featured
+  order
+}
+
+fragment CertificationsParts on Certifications {
+  __typename
+  name
+  organization
+  image
+  issueDate
+  credentialUrl
+  order
+}

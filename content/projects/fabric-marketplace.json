@@ -1,0 +1,11 @@
+{
+  "name": "Fabric Marketplace with AI-Based Fabric Defect Detection",
+  "image": "/images/projects/fabric-marketplace.jpg",
+  "description": "A Flask-based marketplace web app with Admin, Seller, and Buyer roles, featuring a CNN model (94% accuracy) for automated fabric defect detection. Uses OpenCV for image preprocessing and a MySQL database for authentication, product management, and marketplace operations, with secure auth and full CRUD workflows.",
+  "technologies": ["Flask", "TensorFlow", "OpenCV", "MySQL", "Python"],
+  "github": "https://github.com/Mani-KVS",
+  "demo": "",
+  "period": "2024",
+  "featured": true,
+  "order": 2
+}

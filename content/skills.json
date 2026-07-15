@@ -1,0 +1,46 @@
+{
+  "categories": [
+    {
+      "id": "programming",
+      "title": "Programming",
+      "icon": "Code2",
+      "skills": ["Java", "Python", "SQL"]
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend",
+      "icon": "LayoutTemplate",
+      "skills": ["React", "Next.js", "Tailwind CSS", "HTML", "CSS", "JavaScript"]
+    },
+    {
+      "id": "backend",
+      "title": "Backend",
+      "icon": "ServerCog",
+      "skills": ["Flask", "Firebase", "REST APIs"]
+    },
+    {
+      "id": "database",
+      "title": "Database",
+      "icon": "Database",
+      "skills": ["Firestore", "MySQL"]
+    },
+    {
+      "id": "tools",
+      "title": "Tools",
+      "icon": "Wrench",
+      "skills": ["Git", "GitHub", "VS Code", "Oracle Cloud Infrastructure (OCI)"]
+    },
+    {
+      "id": "ml",
+      "title": "Machine Learning",
+      "icon": "BrainCircuit",
+      "skills": ["TensorFlow", "OpenCV", "Scikit-learn"]
+    },
+    {
+      "id": "core",
+      "title": "Core Subjects",
+      "icon": "GraduationCap",
+      "skills": ["Data Structures & Algorithms", "Object-Oriented Programming", "DBMS", "Operating Systems", "Computer Networks"]
+    }
+  ]
+}

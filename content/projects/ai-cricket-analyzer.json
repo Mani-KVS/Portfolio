@@ -1,0 +1,11 @@
+{
+  "name": "AI Cricket Match Analyzer",
+  "image": "/images/projects/cricket-analyzer.jpg",
+  "description": "An AI-powered tool for analyzing cricket match footage and stats — placeholder content added from your redesign brief. Replace this description, tech stack, and links with the real project details from the Admin Panel.",
+  "technologies": ["Python", "OpenCV", "Machine Learning"],
+  "github": "",
+  "demo": "",
+  "period": "2025",
+  "featured": true,
+  "order": 3
+}

@@ -1,0 +1,6 @@
+import { NextRequest } from "next/server";
+
+export function isAdminAuthed(req: NextRequest): boolean {
+  const session = req.cookies.get("admin_session")?.value;
+  return Boolean(session) && session === process.env.ADMIN_PASSWORD;
+}

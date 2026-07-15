@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /comments/{commentId} {
+      // Anyone can submit a comment (it starts as "pending").
+      allow create: if request.resource.data.status == "pending"
+                    && request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.message is string
+                    && request.resource.data.message.size() < 1000;
+
+      // Only approved comments are publicly readable.
+      // Admin moderation (read all / update / delete) goes through the
+      // Admin SDK (server-side, service-account authenticated) via
+      // /api/admin/comments — not through these client-facing rules.
+      allow read: if resource.data.status == "approved";
+      allow update, delete: if false;
+    }
+
+    match /messages/{messageId} {
+      // Anyone can submit a contact-form message; nothing is publicly
+      // readable. Admin inbox reads/updates/deletes go through the Admin
+      // SDK via /api/admin/messages.
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.email is string
+                    && request.resource.data.message is string
+                    && request.resource.data.message.size() < 2000;
+      allow read, update, delete: if false;
+    }
+  }
+}

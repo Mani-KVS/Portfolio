@@ -1,0 +1,11 @@
+{
+  "name": "Accurate Disease Prediction System",
+  "image": "/images/projects/disease-prediction.jpg",
+  "description": "A machine-learning-based system that classifies 40+ diseases from 132 symptom features, using Decision Tree, Random Forest, Gaussian Naive Bayes, and a Soft Voting Ensemble. Achieved 93.23% accuracy with Random Forest and 93.13% with Gaussian Naive Bayes / Soft Voting Ensemble, evaluated with accuracy, precision, recall, F1-score, and confusion matrices.",
+  "technologies": ["Python", "Scikit-learn", "Pandas", "Random Forest", "Gaussian Naive Bayes"],
+  "github": "https://github.com/Mani-KVS",
+  "demo": "",
+  "period": "Jan 2024 – Dec 2024",
+  "featured": true,
+  "order": 1
+}
