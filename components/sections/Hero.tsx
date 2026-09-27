@@ -1,12 +1,80 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Download, Mail, Github, Linkedin, Code2, MapPin } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Download, Mail, Github, Linkedin, Code2, MapPin, FolderGit2 } from "lucide-react";
+import { AuroraBackground, type TapRipple } from "@/components/ui/AuroraBackground";
 import { WorkstationVisual } from "@/components/ui/WorkstationVisual";
 import { Button } from "@/components/ui/Button";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import * as Icons from "lucide-react";
 import type { SiteContent } from "@/lib/content";
+
+const HERO_ROLES = [
+  "Software Engineer",
+  "Software Developer",
+  "Full-Stack Developer",
+  "Backend Developer",
+  "AI/ML Engineer",
+] as const;
+
+function HeroRoleTypewriter() {
+  const prefersReducedMotion = useReducedMotion();
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayText, setDisplayText] = useState<string>(HERO_ROLES[0]);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    const currentFullRole = HERO_ROLES[roleIndex];
+
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    if (!isDeleting && displayText === currentFullRole) {
+      // Pause ~2 seconds after the complete role is displayed
+      timeoutId = setTimeout(() => {
+        setIsDeleting(true);
+      }, 2000);
+    } else if (isDeleting && displayText === "") {
+      // Move to the next role and begin typing
+      timeoutId = setTimeout(() => {
+        setIsDeleting(false);
+        setRoleIndex((prev) => (prev + 1) % HERO_ROLES.length);
+      }, 260);
+    } else {
+      const nextText = isDeleting
+        ? currentFullRole.slice(0, displayText.length - 1)
+        : currentFullRole.slice(0, displayText.length + 1);
+
+      const speed = isDeleting ? 38 : 72;
+      timeoutId = setTimeout(() => {
+        setDisplayText(nextText);
+      }, speed);
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [displayText, isDeleting, roleIndex, prefersReducedMotion]);
+
+  const shownRole = prefersReducedMotion ? HERO_ROLES[0] : displayText;
+
+  return (
+    <div className="mt-2.5 flex min-h-[2rem] items-center sm:min-h-[2.25rem]">
+      <span className="sr-only">{HERO_ROLES.join(", ")}</span>
+      <p
+        aria-hidden="true"
+        className=" inline-flex items-center font-[var(--font-display)] text-lg font-semibold text-[var(--color-accent-solid)] sm:text-xl"
+      >
+        <span>{shownRole}</span>
+        {!prefersReducedMotion && (
+          <span className="animate-cursor-blink ml-0.5 inline-block h-[1.15em] w-[2px] rounded-full bg-[var(--color-accent-solid)] align-middle" />
+        )}
+      </p>
+    </div>
+  );
+}
 
 export function Hero({
   hero,
@@ -17,12 +85,73 @@ export function Hero({
   contact: SiteContent["contact"];
   stats: SiteContent["stats"];
 }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const [ripples, setRipples] = useState<TapRipple[]>([]);
+
+  function updatePointerCoords(clientX: number, clientY: number, activeOpacity = "1") {
+    const el = sectionRef.current;
+    if (!el || prefersReducedMotion) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--pointer-x", `${clientX - rect.left}px`);
+    el.style.setProperty("--pointer-y", `${clientY - rect.top}px`);
+    el.style.setProperty("--pointer-active", activeOpacity);
+  }
+
+  function handlePointerMove(e: React.PointerEvent<HTMLElement>) {
+    // Desktop interaction only for mouse pointers; touch uses dedicated touch handlers
+    if (e.pointerType !== "mouse") return;
+    updatePointerCoords(e.clientX, e.clientY, "1");
+  }
+
+  function handlePointerLeave(e: React.PointerEvent<HTMLElement>) {
+    if (e.pointerType !== "mouse") return;
+    sectionRef.current?.style.setProperty("--pointer-active", "0");
+  }
+
+  function handleTouchStart(e: React.TouchEvent<HTMLElement>) {
+    if (prefersReducedMotion) return;
+    const touch = e.touches[0];
+    if (!touch || !sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    updatePointerCoords(touch.clientX, touch.clientY, "0.85");
+
+    const id = Date.now() + Math.random();
+    setRipples((prev) => [...prev.slice(-3), { id, x, y }]);
+    setTimeout(() => {
+      setRipples((prev) => prev.filter((item) => item.id !== id));
+    }, 700);
+  }
+
+  function handleTouchMove(e: React.TouchEvent<HTMLElement>) {
+    if (prefersReducedMotion) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    updatePointerCoords(touch.clientX, touch.clientY, "0.85");
+  }
+
+  function handleTouchEnd() {
+    sectionRef.current?.style.setProperty("--pointer-active", "0");
+  }
+
   return (
     <section
       id="home"
-      className="relative border-b border-[var(--color-border)] bg-[var(--color-bg)] px-5 pt-14 pb-20 sm:pt-20 sm:pb-24"
+      ref={sectionRef}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
+      className="relative overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-bg)] px-5 pt-14 pb-20 sm:pt-20 sm:pb-24"
     >
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-12">
+      <AuroraBackground variant="full" ripples={ripples} />
+
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-12">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -46,20 +175,27 @@ export function Hero({
             {hero.name}
           </h1>
 
-          <p className="mt-2.5 font-[var(--font-display)] text-lg font-semibold text-[var(--color-accent-solid)] sm:text-xl">
-            {hero.role}
-          </p>
+          <HeroRoleTypewriter />
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--color-ink-muted)] sm:text-lg">
             {hero.tagline}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button href={hero.resumeUrl} download icon={<Download size={16} />} size="lg">
-              Download Resume
+            <Button href="#projects" icon={<FolderGit2 size={16} />} size="lg">
+              View Projects
             </Button>
             <Button href="#contact" variant="secondary" icon={<Mail size={16} />} size="lg">
               Contact Me
+            </Button>
+            <Button
+              href={hero.resumeUrl}
+              variant="secondary"
+              download
+              icon={<Download size={16} />}
+              size="lg"
+            >
+              Download Resume
             </Button>
           </div>
 
@@ -135,4 +271,5 @@ export function Hero({
     </section>
   );
 }
+
 
