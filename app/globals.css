@@ -6,44 +6,50 @@
   --font-body: var(--font-body-loaded), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono-loaded), ui-monospace, SFMono-Regular, monospace;
 
-  /* Light theme (default) */
-  --color-bg: #f8fafc;
-  --color-bg-soft: #f1f5f9;
+  /* LIGHT MODE:
+     Base: #FFFFFF
+     Secondary: #F8FAFC
+     Subtle accent: #E8F3FF
+     Text: #0F172A
+     Muted text: #64748B
+  */
+  --color-bg: #ffffff;
+  --color-bg-soft: #f8fafc;
   --color-surface: #ffffff;
   --color-surface-solid: #ffffff;
   --color-border: #e2e8f0;
   --color-ink: #0f172a;
-  --color-ink-muted: #475569;
-  --color-accent-from: #2563eb;
-  --color-accent-to: #4f46e5;
-  --color-accent-solid: #2563eb;
-  --color-accent-tint: rgba(37, 99, 235, 0.08);
-  --color-glow: rgba(37, 99, 235, 0.10);
-  --shadow-soft: 0 1px 3px rgba(15, 23, 42, 0.05), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  --color-ink-muted: #64748b;
+  --color-accent-from: #0284c7;
+  --color-accent-to: #0ea5a5;
+  --color-accent-solid: #0284c7;
+  --color-accent-tint: #e8f3ff;
+  --color-glow: rgba(2, 132, 199, 0.08);
+  --shadow-soft: 0 1px 3px rgba(15, 23, 42, 0.04), 0 6px 18px -4px rgba(15, 23, 42, 0.035);
 
   /* Dark theme explicit tokens (kept for backward compatibility) */
-  --color-dark-bg: #090d16;
-  --color-dark-bg-soft: #111827;
-  --color-dark-surface: #111827;
-  --color-dark-surface-solid: #111827;
-  --color-dark-border: #1e293b;
+  --color-dark-bg: #07111f;
+  --color-dark-bg-soft: #0b1728;
+  --color-dark-surface: #0b1728;
+  --color-dark-surface-solid: #0b1728;
+  --color-dark-border: #16263d;
   --color-dark-ink: #f8fafc;
   --color-dark-ink-muted: #94a3b8;
-  --color-dark-accent-from: #60a5fa;
-  --color-dark-accent-to: #818cf8;
-  --color-dark-accent-solid: #60a5fa;
-  --color-dark-accent-tint: rgba(96, 165, 250, 0.12);
-  --color-dark-glow: rgba(59, 130, 246, 0.16);
-  --shadow-dark-soft: 0 1px 3px rgba(0, 0, 0, 0.35), 0 8px 24px -4px rgba(0, 0, 0, 0.45);
-  /* Hero technical background tokens (Light mode) */
-  --hero-grid-color: rgba(15, 23, 42, 0.055);
-  --hero-grid-highlight: rgba(13, 148, 136, 0.28);
-  --hero-blue-glow: rgba(37, 99, 235, 0.08);
-  --hero-teal-glow: rgba(13, 148, 136, 0.08);
-  --hero-wave-primary: rgba(37, 99, 235, 0.14);
-  --hero-wave-secondary: rgba(13, 148, 136, 0.14);
-  --hero-circle-border: rgba(37, 99, 235, 0.09);
-  --hero-image-glow: rgba(37, 99, 235, 0.14);
+  --color-dark-accent-from: #0ea5a5;
+  --color-dark-accent-to: #38bdf8;
+  --color-dark-accent-solid: #0ea5a5;
+  --color-dark-accent-tint: rgba(14, 165, 165, 0.12);
+  --color-dark-glow: rgba(14, 165, 165, 0.10);
+  --shadow-dark-soft: 0 1px 3px rgba(0, 0, 0, 0.35), 0 10px 28px -6px rgba(2, 6, 23, 0.55);
+
+  /* Global Ambient & Cursor/Touch Glow Tokens (Light Mode — soft azure/teal wash on #FFFFFF) */
+  --ambient-stationary-glow: rgba(224, 242, 254, 0.75);
+  --cursor-glow-core: rgba(14, 165, 233, 0.14);
+  --cursor-glow-primary: rgba(186, 230, 253, 0.55);
+  --cursor-glow-secondary: rgba(232, 243, 255, 0.45);
+  --touch-ripple-border: rgba(2, 132, 199, 0.28);
+  --touch-ripple-fill: rgba(14, 165, 233, 0.08);
+  --hero-image-glow: rgba(224, 242, 254, 0.85);
 }
 
 :root {
@@ -52,33 +58,42 @@
 
 .dark {
   color-scheme: dark;
-  --color-bg: #090d16;
-  --color-bg-soft: #111827;
-  --color-surface: #111827;
-  --color-surface-solid: #111827;
-  --color-border: #1e293b;
+  /* DARK MODE:
+     Base: #07111F
+     Secondary: #0B1728
+     Subtle accent: #0EA5A5
+     Text: #F8FAFC
+     Muted text: #94A3B8
+  */
+  --color-bg: #07111f;
+  --color-bg-soft: #0b1728;
+  --color-surface: #0b1728;
+  --color-surface-solid: #0b1728;
+  --color-border: #16263d;
   --color-ink: #f8fafc;
   --color-ink-muted: #94a3b8;
-  --color-accent-from: #60a5fa;
-  --color-accent-to: #818cf8;
-  --color-accent-solid: #60a5fa;
-  --color-accent-tint: rgba(96, 165, 250, 0.12);
-  --color-glow: rgba(59, 130, 246, 0.16);
-  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.35), 0 8px 24px -4px rgba(0, 0, 0, 0.45);
+  --color-accent-from: #0ea5a5;
+  --color-accent-to: #38bdf8;
+  --color-accent-solid: #0ea5a5;
+  --color-accent-tint: rgba(14, 165, 165, 0.12);
+  --color-glow: rgba(14, 165, 165, 0.12);
+  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.35), 0 10px 28px -6px rgba(2, 6, 23, 0.55);
 
-  /* Hero technical background tokens (Dark mode) */
-  --hero-grid-color: rgba(148, 163, 184, 0.075);
-  --hero-grid-highlight: rgba(45, 212, 191, 0.38);
-  --hero-blue-glow: rgba(59, 130, 246, 0.13);
-  --hero-teal-glow: rgba(20, 184, 166, 0.12);
-  --hero-wave-primary: rgba(96, 165, 250, 0.18);
-  --hero-wave-secondary: rgba(45, 212, 191, 0.16);
-  --hero-circle-border: rgba(56, 189, 248, 0.10);
-  --hero-image-glow: rgba(20, 184, 166, 0.22);
+  /* Global Ambient & Cursor/Touch Glow Tokens (Dark Mode — refined teal/blue ambient light on #07111F) */
+  --ambient-stationary-glow: rgba(14, 165, 165, 0.07);
+  --cursor-glow-core: rgba(14, 165, 165, 0.13);
+  --cursor-glow-primary: rgba(14, 165, 165, 0.09);
+  --cursor-glow-secondary: rgba(56, 189, 248, 0.05);
+  --touch-ripple-border: rgba(14, 165, 165, 0.38);
+  --touch-ripple-fill: rgba(14, 165, 165, 0.10);
+  --hero-image-glow: rgba(14, 165, 165, 0.10);
 }
 
 * {
   border-color: var(--color-border);
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 600ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html {
@@ -90,7 +105,10 @@ body {
   background-color: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-body);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 ::selection {
@@ -122,12 +140,16 @@ textarea:focus-visible {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-soft);
+  transition:
+    background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Subtle interactive border cue for cards */
 .glow-ring {
   position: relative;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 .glow-ring:hover {
   border-color: color-mix(in srgb, var(--color-accent-solid) 45%, var(--color-border));
@@ -137,34 +159,17 @@ textarea:focus-visible {
 .ambient-glow {
   background: radial-gradient(closest-side, var(--color-glow), transparent);
   filter: blur(80px);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .gradient-button {
   background-image: linear-gradient(135deg, var(--color-accent-from), var(--color-accent-to));
 }
 
-/* ---- Hero technical background patterns & animations ---- */
-.hero-dot-grid {
-  background-image: radial-gradient(var(--hero-grid-color) 1.25px, transparent 1.25px);
-  background-size: 26px 26px;
-}
-
+/* Grid/pattern classes intentionally kept plain (no grids, dots, or geometric patterns) */
+.hero-dot-grid,
 .hero-dot-grid-interactive {
-  background-image: radial-gradient(var(--hero-grid-highlight) 1.5px, transparent 1.5px);
-  background-size: 26px 26px;
-  mask-image: radial-gradient(
-    220px circle at var(--pointer-x, -999px) var(--pointer-y, -999px),
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.4) 55%,
-    transparent 100%
-  );
-  -webkit-mask-image: radial-gradient(
-    220px circle at var(--pointer-x, -999px) var(--pointer-y, -999px),
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.4) 55%,
-    transparent 100%
-  );
+  background-image: none;
 }
 
 @keyframes float-slow {
@@ -217,16 +222,19 @@ textarea:focus-visible {
 
 @keyframes hero-ripple-expand {
   0% {
-    transform: translate(-50%, -50%) scale(0.2);
-    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(0.15);
+    opacity: 0.75;
+  }
+  60% {
+    opacity: 0.35;
   }
   100% {
-    transform: translate(-50%, -50%) scale(2.4);
+    transform: translate(-50%, -50%) scale(3.2);
     opacity: 0;
   }
 }
 .animate-hero-ripple {
-  animation: hero-ripple-expand 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: hero-ripple-expand 850ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes typewriter-cursor-blink {

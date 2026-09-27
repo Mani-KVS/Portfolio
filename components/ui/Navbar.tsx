@@ -49,10 +49,10 @@ export function Navbar({ name }: { name: string }) {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b transition-colors duration-200 ${
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${
         scrolled || open
-          ? "border-[var(--color-border)] bg-[var(--color-surface)]/95 backdrop-blur-md"
-          : "border-transparent bg-[var(--color-bg)]/80 backdrop-blur-sm"
+          ? "border-[var(--color-border)] bg-[var(--color-bg)]/92 backdrop-blur-xs"
+          : "border-[var(--color-border)]/60 bg-[var(--color-bg)]/85 backdrop-blur-xs"
       }`}
     >
       <nav

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Download, Mail, Github, Linkedin, Code2, MapPin, FolderGit2 } from "lucide-react";
-import { AuroraBackground, type TapRipple } from "@/components/ui/AuroraBackground";
+import { AuroraBackground } from "@/components/ui/AuroraBackground";
 import { WorkstationVisual } from "@/components/ui/WorkstationVisual";
 import { Button } from "@/components/ui/Button";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
@@ -85,71 +85,12 @@ export function Hero({
   contact: SiteContent["contact"];
   stats: SiteContent["stats"];
 }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const prefersReducedMotion = useReducedMotion();
-  const [ripples, setRipples] = useState<TapRipple[]>([]);
-
-  function updatePointerCoords(clientX: number, clientY: number, activeOpacity = "1") {
-    const el = sectionRef.current;
-    if (!el || prefersReducedMotion) return;
-    const rect = el.getBoundingClientRect();
-    el.style.setProperty("--pointer-x", `${clientX - rect.left}px`);
-    el.style.setProperty("--pointer-y", `${clientY - rect.top}px`);
-    el.style.setProperty("--pointer-active", activeOpacity);
-  }
-
-  function handlePointerMove(e: React.PointerEvent<HTMLElement>) {
-    // Desktop interaction only for mouse pointers; touch uses dedicated touch handlers
-    if (e.pointerType !== "mouse") return;
-    updatePointerCoords(e.clientX, e.clientY, "1");
-  }
-
-  function handlePointerLeave(e: React.PointerEvent<HTMLElement>) {
-    if (e.pointerType !== "mouse") return;
-    sectionRef.current?.style.setProperty("--pointer-active", "0");
-  }
-
-  function handleTouchStart(e: React.TouchEvent<HTMLElement>) {
-    if (prefersReducedMotion) return;
-    const touch = e.touches[0];
-    if (!touch || !sectionRef.current) return;
-    const rect = sectionRef.current.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-
-    updatePointerCoords(touch.clientX, touch.clientY, "0.85");
-
-    const id = Date.now() + Math.random();
-    setRipples((prev) => [...prev.slice(-3), { id, x, y }]);
-    setTimeout(() => {
-      setRipples((prev) => prev.filter((item) => item.id !== id));
-    }, 700);
-  }
-
-  function handleTouchMove(e: React.TouchEvent<HTMLElement>) {
-    if (prefersReducedMotion) return;
-    const touch = e.touches[0];
-    if (!touch) return;
-    updatePointerCoords(touch.clientX, touch.clientY, "0.85");
-  }
-
-  function handleTouchEnd() {
-    sectionRef.current?.style.setProperty("--pointer-active", "0");
-  }
-
   return (
     <section
       id="home"
-      ref={sectionRef}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      onTouchCancel={handleTouchEnd}
-      className="relative overflow-hidden border-b border-[var(--color-border)] bg-[var(--color-bg)] px-5 pt-14 pb-20 sm:pt-20 sm:pb-24"
+      className="relative border-b border-[var(--color-border)] bg-transparent px-5 pt-14 pb-20 sm:pt-20 sm:pb-24"
     >
-      <AuroraBackground variant="full" ripples={ripples} />
+      <AuroraBackground variant="full" />
 
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-12">
         <motion.div

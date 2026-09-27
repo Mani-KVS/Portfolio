@@ -39,69 +39,8 @@ export function Contact({
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="relative overflow-hidden border-t border-[var(--color-border)] bg-[var(--color-bg-soft)]/45 px-5 py-20 sm:py-24 lg:py-28"
+      className="relative border-t border-[var(--color-border)] bg-[var(--color-bg-soft)]/35 px-5 py-20 sm:py-24 lg:py-28"
     >
-      {/* Animated technical background matching portfolio visual language */}
-      <div
-        aria-hidden="true"
-        className="hero-dot-grid pointer-events-none absolute inset-0 opacity-45"
-      />
-
-      {/* Soft blue & teal radial ambient glows */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-28 top-10 h-96 w-96 rounded-full blur-3xl"
-        style={{
-          background:
-            "radial-gradient(circle, var(--hero-blue-glow) 0%, transparent 70%)",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-28 bottom-10 h-96 w-96 rounded-full blur-3xl"
-        style={{
-          background:
-            "radial-gradient(circle, var(--hero-teal-glow) 0%, transparent 70%)",
-        }}
-      />
-
-      {/* Thin flowing curved wave lines */}
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 1440 420"
-        fill="none"
-        preserveAspectRatio="none"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 w-full opacity-55"
-      >
-        <path
-          d="M-80 260 C 320 180, 680 340, 1120 230 C 1300 185, 1420 210, 1520 240"
-          stroke="var(--hero-wave-primary)"
-          strokeWidth="1.25"
-          className="animate-hero-wave"
-        />
-        <path
-          d="M-60 320 C 360 240, 760 370, 1180 270 C 1340 235, 1440 260, 1540 290"
-          stroke="var(--hero-wave-secondary)"
-          strokeWidth="1.15"
-          className="animate-hero-wave-reverse"
-        />
-      </svg>
-
-      {/* Few subtle floating particles */}
-      <span
-        aria-hidden="true"
-        className="animate-hero-particle pointer-events-none absolute left-[12%] top-[18%] h-2 w-2 rounded-full bg-sky-400/35"
-      />
-      <span
-        aria-hidden="true"
-        style={{ animationDelay: "-5s" }}
-        className="animate-hero-particle pointer-events-none absolute left-[42%] bottom-[16%] h-1.5 w-1.5 rounded-full bg-teal-400/35"
-      />
-      <span
-        aria-hidden="true"
-        style={{ animationDelay: "-9s" }}
-        className="animate-hero-particle pointer-events-none absolute right-[14%] top-[22%] h-2 w-2 rounded-full bg-blue-400/30"
-      />
 
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">

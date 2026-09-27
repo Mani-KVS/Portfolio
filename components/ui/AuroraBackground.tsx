@@ -1,150 +1,398 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
+
 export interface TapRipple {
   id: number;
   x: number;
   y: number;
 }
 
-const PARTICLES = [
-  { top: "16%", left: "12%", size: 5, delay: "0s", duration: "15s", color: "bg-blue-500/30 dark:bg-blue-400/35", mobileHidden: false },
-  { top: "28%", left: "44%", size: 4, delay: "2.5s", duration: "18s", color: "bg-teal-500/30 dark:bg-teal-400/35", mobileHidden: false },
-  { top: "68%", left: "18%", size: 6, delay: "4s", duration: "16s", color: "bg-teal-500/25 dark:bg-teal-400/30", mobileHidden: false },
-  { top: "22%", left: "78%", size: 5, delay: "1.2s", duration: "17s", color: "bg-blue-500/30 dark:bg-blue-400/35", mobileHidden: true },
-  { top: "74%", left: "62%", size: 4, delay: "3.2s", duration: "19s", color: "bg-teal-500/25 dark:bg-teal-400/30", mobileHidden: true },
-  { top: "52%", left: "88%", size: 5, delay: "5s", duration: "16s", color: "bg-blue-500/25 dark:bg-blue-400/30", mobileHidden: true },
-];
+interface TrailBead {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  radius: number;
+  alpha: number;
+  decay: number;
+  kind: "bead" | "orb" | "spark";
+}
 
 export function AuroraBackground({
   variant = "full",
-  ripples = [],
 }: {
   variant?: "full" | "subtle";
   ripples?: TapRipple[];
 }) {
-  const opacity = variant === "full" ? 1 : 0.55;
+  const prefersReducedMotion = useReducedMotion();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const cursorGlowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    if (typeof window === "undefined") return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    const resizeCanvas = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas, { passive: true });
+
+    const particles: TrailBead[] = [];
+    let lastX: number | null = null;
+    let lastY: number | null = null;
+    let rafId: number | null = null;
+
+    // Smooth ambient background glow coordinates
+    let glowTargetX = width * 0.7;
+    let glowTargetY = height * 0.3;
+    let glowCurrX = glowTargetX;
+    let glowCurrY = glowTargetY;
+    let glowVisible = false;
+    let fadeTimer: number | null = null;
+
+    const isDarkMode = () =>
+      document.documentElement.classList.contains("dark");
+
+    const addParticle = (p: TrailBead) => {
+      if (particles.length > 260) {
+        particles.shift();
+      }
+      particles.push(p);
+    };
+
+    // Spawn the exact 3-layer effect from the reference image:
+    // 1) Tapering dotted S-curve trail ("bead")
+    // 2) Glowing luminous bokeh spheres with soft outer halos ("orb")
+    // 3) Fine drifting stardust specks ("spark")
+    const emitAlongSegment = (x1: number, y1: number, x2: number, y2: number) => {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const dist = Math.hypot(dx, dy);
+      const step = 8;
+      const steps = Math.max(1, Math.min(18, Math.floor(dist / step)));
+
+      for (let i = 0; i < steps; i++) {
+        const t = (i + 1) / steps;
+        const px = x1 + dx * t;
+        const py = y1 + dy * t;
+
+        // 1. Tapering curved trail bead (forms the continuous dotted line)
+        addParticle({
+          x: px + (Math.random() - 0.5) * 1.5,
+          y: py + (Math.random() - 0.5) * 1.5,
+          vx: dx * 0.012 + (Math.random() - 0.5) * 0.15,
+          vy: dy * 0.012 + (Math.random() - 0.5) * 0.15,
+          radius: 2.4 + Math.random() * 1.4,
+          alpha: 0.85,
+          decay: 0.022 + Math.random() * 0.008,
+          kind: "bead",
+        });
+
+        // 2. Luminous glowing bokeh orb with soft radial halo
+        if (Math.random() < 0.32) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 0.25 + Math.random() * 0.85;
+          addParticle({
+            x: px + (Math.random() - 0.5) * 10,
+            y: py + (Math.random() - 0.5) * 10,
+            vx: Math.cos(angle) * speed + dx * 0.02,
+            vy: Math.sin(angle) * speed + 0.35,
+            radius: 4.2 + Math.random() * 3.6,
+            alpha: 0.95,
+            decay: 0.013 + Math.random() * 0.007,
+            kind: "orb",
+          });
+        }
+
+        // 3. Fine scattered micro-sparks drifting downward
+        if (Math.random() < 0.45) {
+          addParticle({
+            x: px + (Math.random() - 0.5) * 26,
+            y: py + (Math.random() - 0.5) * 26,
+            vx: (Math.random() - 0.5) * 0.9,
+            vy: 0.35 + Math.random() * 1.15,
+            radius: 0.9 + Math.random() * 1.2,
+            alpha: 0.8,
+            decay: 0.014 + Math.random() * 0.01,
+            kind: "spark",
+          });
+        }
+      }
+    };
+
+    const emitBurst = (x: number, y: number) => {
+      for (let i = 0; i < 10; i++) {
+        const angle = (Math.PI * 2 * i) / 10 + (Math.random() - 0.5) * 0.4;
+        const speed = 0.5 + Math.random() * 1.6;
+        addParticle({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed + 0.25,
+          radius: 4.5 + Math.random() * 3.8,
+          alpha: 0.98,
+          decay: 0.014 + Math.random() * 0.006,
+          kind: "orb",
+        });
+      }
+      for (let i = 0; i < 16; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.4 + Math.random() * 2.2;
+        addParticle({
+          x: x + (Math.random() - 0.5) * 12,
+          y: y + (Math.random() - 0.5) * 12,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed + 0.5,
+          radius: 1.0 + Math.random() * 1.3,
+          alpha: 0.85,
+          decay: 0.016 + Math.random() * 0.008,
+          kind: "spark",
+        });
+      }
+    };
+
+    const renderFrame = () => {
+      ctx.clearRect(0, 0, width, height);
+      const dark = isDarkMode();
+
+      // Update soft ambient glow position
+      glowCurrX += (glowTargetX - glowCurrX) * 0.12;
+      glowCurrY += (glowTargetY - glowCurrY) * 0.12;
+      if (cursorGlowRef.current) {
+        cursorGlowRef.current.style.transform = `translate3d(${(glowCurrX - 300).toFixed(1)}px, ${(glowCurrY - 300).toFixed(1)}px, 0)`;
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.kind === "orb") {
+          p.vx *= 0.985;
+          p.vy = p.vy * 0.985 + 0.016; // gentle downward float like reference image
+        } else if (p.kind === "spark") {
+          p.vx *= 0.99;
+          p.vy += 0.02;
+        } else {
+          p.vx *= 0.92;
+          p.vy *= 0.92;
+          p.radius *= 0.984; // tapering trail bead size
+        }
+
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0.01 || p.radius <= 0.25) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        if (p.kind === "orb") {
+          // Draw soft outer radial halo + bright luminous core (matching reference image)
+          const haloRadius = p.radius * 4.2;
+          const grad = ctx.createRadialGradient(
+            p.x,
+            p.y,
+            0,
+            p.x,
+            p.y,
+            haloRadius
+          );
+          if (dark) {
+            grad.addColorStop(0, `rgba(255, 255, 255, ${p.alpha})`);
+            grad.addColorStop(0.22, `rgba(224, 242, 254, ${p.alpha * 0.85})`);
+            grad.addColorStop(0.5, `rgba(56, 189, 248, ${p.alpha * 0.28})`);
+            grad.addColorStop(1, "rgba(14, 165, 165, 0)");
+          } else {
+            grad.addColorStop(0, `rgba(2, 132, 199, ${p.alpha * 0.95})`);
+            grad.addColorStop(0.25, `rgba(14, 165, 233, ${p.alpha * 0.65})`);
+            grad.addColorStop(0.55, `rgba(56, 189, 248, ${p.alpha * 0.22})`);
+            grad.addColorStop(1, "rgba(186, 230, 253, 0)");
+          }
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, haloRadius, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Crisp inner pearl core
+          ctx.fillStyle = dark
+            ? `rgba(255, 255, 255, ${Math.min(1, p.alpha * 1.1)})`
+            : `rgba(2, 132, 199, ${Math.min(1, p.alpha)})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius * 0.72, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (p.kind === "bead") {
+          // Dotted curve trail bead
+          ctx.fillStyle = dark
+            ? `rgba(241, 245, 249, ${p.alpha * 0.78})`
+            : `rgba(14, 165, 233, ${p.alpha * 0.68})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // Fine micro-spark dot
+          ctx.fillStyle = dark
+            ? `rgba(224, 242, 254, ${p.alpha * 0.85})`
+            : `rgba(2, 132, 199, ${p.alpha * 0.75})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      const stillMovingGlow =
+        Math.abs(glowTargetX - glowCurrX) > 0.4 ||
+        Math.abs(glowTargetY - glowCurrY) > 0.4;
+
+      if (particles.length > 0 || stillMovingGlow) {
+        rafId = window.requestAnimationFrame(renderFrame);
+      } else {
+        rafId = null;
+      }
+    };
+
+    const wakeLoop = () => {
+      if (rafId === null) {
+        rafId = window.requestAnimationFrame(renderFrame);
+      }
+    };
+
+    const handleMove = (x: number, y: number) => {
+      glowTargetX = x;
+      glowTargetY = y;
+      if (!glowVisible && cursorGlowRef.current) {
+        glowVisible = true;
+        cursorGlowRef.current.style.opacity = "1";
+      }
+      if (fadeTimer !== null) {
+        window.clearTimeout(fadeTimer);
+        fadeTimer = null;
+      }
+
+      if (lastX !== null && lastY !== null) {
+        emitAlongSegment(lastX, lastY, x, y);
+      } else {
+        emitAlongSegment(x, y, x + 1, y + 1);
+      }
+      lastX = x;
+      lastY = y;
+      wakeLoop();
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      handleMove(e.clientX, e.clientY);
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      lastX = e.clientX;
+      lastY = e.clientY;
+      glowTargetX = e.clientX;
+      glowTargetY = e.clientY;
+      if (e.pointerType === "touch") {
+        glowCurrX = e.clientX;
+        glowCurrY = e.clientY;
+      }
+      if (cursorGlowRef.current) {
+        glowVisible = true;
+        cursorGlowRef.current.style.opacity = "1";
+      }
+      emitBurst(e.clientX, e.clientY);
+      wakeLoop();
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      handleMove(touch.clientX, touch.clientY);
+    };
+
+    const resetTrailOrigin = () => {
+      lastX = null;
+      lastY = null;
+      fadeTimer = window.setTimeout(() => {
+        glowVisible = false;
+        if (cursorGlowRef.current) {
+          cursorGlowRef.current.style.opacity = "0";
+        }
+      }, 700);
+    };
+
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerdown", onPointerDown, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", resetTrailOrigin, { passive: true });
+    window.addEventListener("touchcancel", resetTrailOrigin, { passive: true });
+    document.addEventListener("mouseleave", resetTrailOrigin);
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", resetTrailOrigin);
+      window.removeEventListener("touchcancel", resetTrailOrigin);
+      document.removeEventListener("mouseleave", resetTrailOrigin);
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+      if (fadeTimer !== null) window.clearTimeout(fadeTimer);
+    };
+  }, [prefersReducedMotion]);
+
+  if (variant === "subtle") {
+    return null;
+  }
 
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none"
-      style={{ opacity }}
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
     >
-      {/* 1. Slow ambient blue & teal radial gradients */}
+      {/* Stationary subtle ambient radial glow (keeps 85%+ of screen plain #07111F in dark / #FFFFFF in light) */}
       <div
-        className="animate-float-slow absolute -left-28 -top-28 h-[28rem] w-[28rem] rounded-full blur-3xl"
+        className="absolute inset-0 transition-opacity duration-600"
         style={{
-          background: "radial-gradient(closest-side, var(--hero-blue-glow), transparent)",
-        }}
-      />
-      <div
-        className="animate-float-slower absolute -right-24 top-1/4 h-[26rem] w-[26rem] rounded-full blur-3xl"
-        style={{
-          background: "radial-gradient(closest-side, var(--hero-teal-glow), transparent)",
-        }}
-      />
-      <div
-        className="animate-float-slow absolute bottom-0 left-1/3 h-[22rem] w-[22rem] rounded-full blur-3xl"
-        style={{
-          background: "radial-gradient(closest-side, var(--hero-blue-glow), transparent)",
-        }}
-      />
-
-      {/* 2. Faint technical dot/grid pattern across the Hero */}
-      <div className="hero-dot-grid absolute inset-0" />
-
-      {/* 3. Interactive dot/grid highlight responding to cursor (desktop) or touch drag (mobile) */}
-      <div
-        className="hero-dot-grid-interactive absolute inset-0 transition-opacity duration-300"
-        style={{ opacity: "var(--pointer-active, 0)" }}
-      />
-
-      {/* 4. Soft radial cursor / touch-drag glow */}
-      <div
-        className="absolute inset-0 transition-opacity duration-300"
-        style={{
-          opacity: "var(--pointer-active, 0)",
           background:
-            "radial-gradient(320px circle at var(--pointer-x, -999px) var(--pointer-y, -999px), var(--hero-teal-glow), var(--hero-blue-glow) 45%, transparent 75%)",
+            "radial-gradient(circle 680px at 74% 24%, var(--ambient-stationary-glow), transparent 72%)",
         }}
       />
 
-      {/* 5. Very subtle translucent circular geometric shapes */}
-      <div
-        className="animate-float-slower absolute -left-16 top-1/3 h-64 w-64 rounded-full border"
-        style={{ borderColor: "var(--hero-circle-border)" }}
-      />
-      <div
-        className="animate-float-slow absolute right-[8%] top-[12%] hidden h-80 w-80 rounded-full border sm:block"
-        style={{ borderColor: "var(--hero-circle-border)" }}
-      />
-      <div
-        className="animate-float-slower absolute bottom-[10%] right-[28%] h-44 w-44 rounded-full border"
-        style={{ borderColor: "var(--hero-circle-border)" }}
-      />
-
-      {/* 6. Thin flowing curved/wave lines moving very slowly */}
-      <svg
-        className="animate-hero-wave absolute inset-x-0 top-[18%] -left-[7%] h-64 w-[115%] opacity-80"
-        viewBox="0 0 1440 320"
-        fill="none"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M0,160 C320,90 640,230 960,150 C1200,90 1340,170 1440,140"
-          stroke="var(--hero-wave-primary)"
-          strokeWidth="1.25"
-          strokeLinecap="round"
-        />
-        <path
-          d="M0,210 C360,260 720,110 1080,190 C1260,230 1360,180 1440,200"
-          stroke="var(--hero-wave-secondary)"
-          strokeWidth="1"
-          strokeLinecap="round"
-        />
-      </svg>
-
-      <svg
-        className="animate-hero-wave-reverse absolute inset-x-0 bottom-[10%] -left-[5%] h-56 w-[115%] opacity-75"
-        viewBox="0 0 1440 320"
-        fill="none"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M0,120 C280,200 660,70 1020,160 C1220,210 1350,130 1440,155"
-          stroke="var(--hero-wave-secondary)"
-          strokeWidth="1.15"
-          strokeLinecap="round"
-        />
-      </svg>
-
-      {/* 7. Small blue/teal floating particles */}
-      {PARTICLES.map((p, idx) => (
-        <span
-          key={idx}
-          className={`animate-hero-particle absolute rounded-full ${p.color} ${
-            p.mobileHidden ? "hidden sm:block" : ""
-          }`}
+      {/* Soft ambient radial backlight following cursor / touch */}
+      {!prefersReducedMotion && (
+        <div
+          ref={cursorGlowRef}
+          className="fixed left-0 top-0 h-[600px] w-[600px] rounded-full opacity-0 blur-[80px] transition-opacity duration-500 will-change-transform"
           style={{
-            top: p.top,
-            left: p.left,
-            width: `${p.size}px`,
-            height: `${p.size}px`,
-            animationDelay: p.delay,
-            animationDuration: p.duration,
+            background:
+              "radial-gradient(circle, var(--cursor-glow-core) 0%, var(--cursor-glow-primary) 32%, transparent 72%)",
           }}
         />
-      ))}
+      )}
 
-      {/* 8. Touch tap expanding ripples (mobile/tablet touch devices) */}
-      {ripples.map((r) => (
-        <span
-          key={r.id}
-          className="animate-hero-ripple absolute h-24 w-24 rounded-full border border-teal-500/35 bg-blue-500/10 dark:border-teal-400/40 dark:bg-teal-400/10"
-          style={{ left: `${r.x}px`, top: `${r.y}px` }}
+      {/* 60fps Luminous Orb & Tapering Dotted Trail Canvas (matches reference image on cursor move & mobile touch) */}
+      {!prefersReducedMotion && (
+        <canvas
+          ref={canvasRef}
+          className="pointer-events-none fixed inset-0 z-10 block"
         />
-      ))}
+      )}
     </div>
   );
 }
-

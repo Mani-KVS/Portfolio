@@ -11,13 +11,13 @@ import Image from "next/image";
 export function WorkstationVisual({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="relative w-full">
-      {/* Subtle pulsing blue/teal outer glow behind the profile/workstation area */}
+      {/* Calm static subtle ambient depth behind the profile/workstation frame */}
       <div
         aria-hidden="true"
-        className="animate-hero-image-glow pointer-events-none absolute -inset-5 -z-10 rounded-3xl blur-2xl"
+        className="pointer-events-none absolute -inset-4 -z-10 rounded-3xl blur-2xl transition-opacity duration-600"
         style={{
           background:
-            "radial-gradient(circle at 50% 50%, var(--hero-image-glow) 0%, var(--hero-teal-glow) 55%, transparent 80%)",
+            "radial-gradient(circle at 50% 50%, var(--hero-image-glow) 0%, transparent 75%)",
         }}
       />
 
