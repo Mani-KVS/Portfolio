@@ -52,14 +52,17 @@ export function ContactForm() {
 
   return (
     <motion.form
-      initial={{ opacity: 0, x: 20 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.4 }}
       onSubmit={handleSubmit}
-      className="glass-card glow-ring rounded-3xl p-7"
+      className="glass-card rounded-2xl p-6 sm:p-7"
     >
-      <div className="space-y-5">
+      <h3 className="mb-4 font-[var(--font-display)] text-base font-bold text-[var(--color-ink)]">
+        Send a Direct Message
+      </h3>
+      <div className="space-y-4">
         <FloatingInput
           label="Your name"
           value={values.name}
@@ -84,16 +87,19 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="gradient-button mt-5 flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_-8px_var(--color-glow)] transition-transform active:scale-[0.98] disabled:opacity-60 dark:shadow-[0_8px_24px_-8px_var(--color-dark-glow)]"
+        className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-accent-solid)] px-5 py-3 text-sm font-semibold text-white shadow-xs transition-opacity hover:opacity-95 disabled:opacity-60"
       >
         {status === "sent" ? <CheckCircle2 size={16} /> : <Send size={16} />}
         {status === "sending" ? "Sending..." : status === "sent" ? "Message Sent" : "Send Message"}
       </button>
 
       {status === "sent" && (
-        <p className="mt-3 text-center text-xs text-emerald-500">Thanks for reaching out — I&apos;ll reply soon!</p>
+        <p className="mt-3 text-center text-xs font-medium text-emerald-600 dark:text-emerald-400">
+          Thanks for reaching out — I&apos;ll reply soon!
+        </p>
       )}
       {status === "error" && <p className="mt-3 text-center text-xs text-red-500">{errorMsg}</p>}
     </motion.form>
   );
 }
+

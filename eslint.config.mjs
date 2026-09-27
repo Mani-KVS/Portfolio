@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
 
     // Ignore TinaCMS generated files
     "tina/__generated__/**",
+    "public/admin/**",
   ]),
 ]);
 

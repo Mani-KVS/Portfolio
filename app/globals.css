@@ -1,39 +1,40 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-display: var(--font-display-loaded), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-body-loaded), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono-loaded), ui-monospace, SFMono-Regular, monospace;
 
-  /* Light theme */
-  --color-bg: #f8f8fc;
-  --color-bg-soft: #eeedf9;
-  --color-surface: rgba(255, 255, 255, 0.72);
+  /* Light theme (default) */
+  --color-bg: #f8fafc;
+  --color-bg-soft: #f1f5f9;
+  --color-surface: #ffffff;
   --color-surface-solid: #ffffff;
-  --color-border: rgba(99, 60, 220, 0.10);
-  --color-ink: #15152b;
-  --color-ink-muted: #5c5a75;
-  --color-accent-from: #7c3aed;
-  --color-accent-to: #2563eb;
-  --color-accent-solid: #6d28d9;
-  --color-accent-tint: rgba(124, 58, 237, 0.10);
-  --color-glow: rgba(124, 58, 237, 0.16);
-  --shadow-soft: 0 1px 2px rgba(23, 20, 60, 0.04), 0 12px 32px -12px rgba(60, 40, 140, 0.14);
+  --color-border: #e2e8f0;
+  --color-ink: #0f172a;
+  --color-ink-muted: #475569;
+  --color-accent-from: #2563eb;
+  --color-accent-to: #4f46e5;
+  --color-accent-solid: #2563eb;
+  --color-accent-tint: rgba(37, 99, 235, 0.08);
+  --color-glow: rgba(37, 99, 235, 0.10);
+  --shadow-soft: 0 1px 3px rgba(15, 23, 42, 0.05), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
 
-  /* Dark theme */
-  --color-dark-bg: #08070f;
-  --color-dark-bg-soft: #0f0d1c;
-  --color-dark-surface: rgba(255, 255, 255, 0.045);
-  --color-dark-surface-solid: #12101f;
-  --color-dark-border: rgba(255, 255, 255, 0.09);
-  --color-dark-ink: #f4f3fb;
-  --color-dark-ink-muted: #a5a2c4;
-  --color-dark-accent-from: #a78bfa;
-  --color-dark-accent-to: #60a5fa;
-  --color-dark-accent-solid: #a78bfa;
-  --color-dark-accent-tint: rgba(167, 139, 250, 0.12);
-  --color-dark-glow: rgba(139, 92, 246, 0.35);
-  --shadow-dark-soft: 0 1px 2px rgba(0, 0, 0, 0.2), 0 20px 48px -16px rgba(0, 0, 0, 0.55);
+  /* Dark theme explicit tokens (kept for backward compatibility) */
+  --color-dark-bg: #090d16;
+  --color-dark-bg-soft: #111827;
+  --color-dark-surface: #111827;
+  --color-dark-surface-solid: #111827;
+  --color-dark-border: #1e293b;
+  --color-dark-ink: #f8fafc;
+  --color-dark-ink-muted: #94a3b8;
+  --color-dark-accent-from: #60a5fa;
+  --color-dark-accent-to: #818cf8;
+  --color-dark-accent-solid: #60a5fa;
+  --color-dark-accent-tint: rgba(96, 165, 250, 0.12);
+  --color-dark-glow: rgba(59, 130, 246, 0.16);
+  --shadow-dark-soft: 0 1px 3px rgba(0, 0, 0, 0.35), 0 8px 24px -4px rgba(0, 0, 0, 0.45);
 }
 
 :root {
@@ -42,106 +43,86 @@
 
 .dark {
   color-scheme: dark;
+  --color-bg: #090d16;
+  --color-bg-soft: #111827;
+  --color-surface: #111827;
+  --color-surface-solid: #111827;
+  --color-border: #1e293b;
+  --color-ink: #f8fafc;
+  --color-ink-muted: #94a3b8;
+  --color-accent-from: #60a5fa;
+  --color-accent-to: #818cf8;
+  --color-accent-solid: #60a5fa;
+  --color-accent-tint: rgba(96, 165, 250, 0.12);
+  --color-glow: rgba(59, 130, 246, 0.16);
+  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.35), 0 8px 24px -4px rgba(0, 0, 0, 0.45);
 }
 
 * {
   border-color: var(--color-border);
 }
-.dark * {
-  border-color: var(--color-dark-border);
-}
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
   background-color: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-body);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.dark body {
-  background-color: var(--color-dark-bg);
-  color: var(--color-dark-ink);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 ::selection {
   background-color: var(--color-accent-tint);
   color: var(--color-accent-solid);
 }
-.dark ::selection {
-  background-color: var(--color-dark-accent-tint);
-  color: var(--color-dark-accent-solid);
+
+/* Accessible keyboard focus indicator */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-accent-solid);
+  outline-offset: 2px;
 }
 
-/* ---- Design system utility classes (used across all sections) ---- */
+/* ---- Design system utility classes ---- */
 
-/* Gradient text, the site's signature accent treatment */
+/* Accent text treatment */
 .text-gradient {
   background-image: linear-gradient(120deg, var(--color-accent-from), var(--color-accent-to));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-.dark .text-gradient {
-  background-image: linear-gradient(120deg, var(--color-dark-accent-from), var(--color-dark-accent-to));
-}
 
-/* Glass card, the primary surface treatment throughout the site */
+/* Primary card surface treatment throughout the site */
 .glass-card {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   box-shadow: var(--shadow-soft);
 }
-.dark .glass-card {
-  background-color: var(--color-dark-surface);
-  border-color: var(--color-dark-border);
-  box-shadow: var(--shadow-dark-soft);
-}
 
-/* Gradient-glow border ring that appears on hover, the site's signature
-   interactive cue for every clickable card (projects, certs, skills) */
+/* Subtle interactive border cue for cards */
 .glow-ring {
   position: relative;
-  isolation: isolate;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
-.glow-ring::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, var(--color-accent-from), var(--color-accent-to));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  z-index: -1;
-  pointer-events: none;
-}
-.glow-ring:hover::before {
-  opacity: 1;
-}
-.dark .glow-ring::before {
-  background: linear-gradient(135deg, var(--color-dark-accent-from), var(--color-dark-accent-to));
+.glow-ring:hover {
+  border-color: color-mix(in srgb, var(--color-accent-solid) 45%, var(--color-border));
 }
 
-/* Soft ambient glow used behind hero/section accents */
+/* Restrained ambient background tint */
 .ambient-glow {
   background: radial-gradient(closest-side, var(--color-glow), transparent);
-  filter: blur(60px);
-}
-.dark .ambient-glow {
-  background: radial-gradient(closest-side, var(--color-dark-glow), transparent);
+  filter: blur(80px);
+  opacity: 0.5;
 }
 
 .gradient-button {
-  background-image: linear-gradient(120deg, var(--color-accent-from), var(--color-accent-to));
+  background-image: linear-gradient(135deg, var(--color-accent-from), var(--color-accent-to));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -156,16 +137,17 @@ body {
 }
 
 @keyframes float-slow {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(20px, -30px) rotate(6deg); }
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(12px, -16px); }
 }
 .animate-float-slow {
-  animation: float-slow 9s ease-in-out infinite;
+  animation: float-slow 12s ease-in-out infinite;
 }
 @keyframes float-slower {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(-25px, 25px) rotate(-8deg); }
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-14px, 14px); }
 }
 .animate-float-slower {
-  animation: float-slower 13s ease-in-out infinite;
+  animation: float-slower 16s ease-in-out infinite;
 }
+

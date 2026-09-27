@@ -22,14 +22,15 @@ export function Button({
   download,
   className = "",
 }: ButtonProps) {
-  const base = "inline-flex items-center gap-2 rounded-full font-semibold transition-all duration-300 active:scale-[0.97]";
+  const base =
+    "inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200 active:scale-[0.98]";
 
-  const sizing = size === "lg" ? "px-6 py-3 text-base" : "px-5 py-2.5 text-sm";
+  const sizing = size === "lg" ? "px-5 py-2.5 text-sm sm:text-base" : "px-4 py-2 text-sm";
 
   const styles =
     variant === "primary"
-      ? "gradient-button text-white shadow-[0_8px_24px_-8px_var(--color-glow)] hover:shadow-[0_12px_32px_-8px_var(--color-glow)] hover:-translate-y-0.5 dark:shadow-[0_8px_24px_-8px_var(--color-dark-glow)] dark:hover:shadow-[0_12px_32px_-8px_var(--color-dark-glow)]"
-      : "glass-card hover:-translate-y-0.5 hover:border-[var(--color-accent-solid)]/40 dark:hover:border-[var(--color-dark-accent-solid)]/40";
+      ? "bg-[var(--color-accent-solid)] text-white shadow-sm hover:opacity-95"
+      : "border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-ink)] shadow-xs hover:border-[var(--color-accent-solid)] hover:bg-[var(--color-bg-soft)]";
 
   if (external) {
     return (
@@ -61,3 +62,4 @@ export function Button({
     </Link>
   );
 }
+

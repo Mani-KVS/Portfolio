@@ -1,13 +1,6 @@
 import { initializeApp, getApps, getApp, type FirebaseOptions } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-console.log("===== FIREBASE CONFIG =====");
-console.log("API KEY:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
-console.log("PROJECT ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
-console.log("AUTH DOMAIN:", process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
-console.log("APP ID:", process.env.NEXT_PUBLIC_FIREBASE_APP_ID);
-console.log("===========================");
-
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,

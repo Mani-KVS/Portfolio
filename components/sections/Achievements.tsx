@@ -8,29 +8,29 @@ import type { SiteContent } from "@/lib/content";
 
 export function Achievements({ stats }: { stats: SiteContent["stats"] }) {
   return (
-    <section id="achievements" className="relative mx-auto max-w-6xl px-5 py-24">
-      <SectionHeading label="Achievements" title="Numbers that speak" align="center" />
+    <section id="achievements" className="mx-auto max-w-6xl px-5 py-20">
+      <SectionHeading label="Highlights" title="Key Academic & Coding Milestones" />
 
-      <div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {stats.map((stat, i) => {
-          const Icon = (Icons as unknown as Record<string, Icons.LucideIcon>)[stat.icon] ?? Icons.Trophy;
+          const Icon =
+            (Icons as unknown as Record<string, Icons.LucideIcon>)[stat.icon] ?? Icons.Trophy;
           return (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              whileHover={{ y: -4 }}
-              className="glass-card glow-ring flex flex-col items-center rounded-3xl p-7 text-center"
+              transition={{ duration: 0.4, delay: i * 0.06 }}
+              className="glass-card glow-ring flex flex-col rounded-2xl p-6"
             >
-              <div className="gradient-button flex h-12 w-12 items-center justify-center rounded-2xl shadow-[0_8px_20px_-6px_var(--color-glow)] dark:shadow-[0_8px_20px_-6px_var(--color-dark-glow)]">
-                <Icon size={20} className="text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-accent-tint)] text-[var(--color-accent-solid)]">
+                <Icon size={18} />
               </div>
-              <p className="mt-4 font-[var(--font-display)] text-3xl font-extrabold sm:text-4xl">
+              <p className="mt-4 font-[var(--font-display)] text-3xl font-bold text-[var(--color-ink)]">
                 <AnimatedCounter value={stat.value} suffix={stat.suffix} />
               </p>
-              <p className="mt-1 text-xs font-medium text-[var(--color-ink-muted)] dark:text-[var(--color-dark-ink-muted)]">
+              <p className="mt-1 text-xs font-medium text-[var(--color-ink-muted)]">
                 {stat.label}
               </p>
             </motion.div>
@@ -40,3 +40,4 @@ export function Achievements({ stats }: { stats: SiteContent["stats"] }) {
     </section>
   );
 }
+

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "tinacms dev -c \"next dev\"",
-    "build": "tinacms build && next build",
+    "build": "node --max-old-space-size=4096 ./node_modules/@tinacms/cli/bin/tinacms build && next build",
     "start": "next start",
     "lint": "eslint"
   },
