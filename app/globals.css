@@ -135,9 +135,11 @@ textarea:focus-visible {
   color: transparent;
 }
 
-/* Primary card surface treatment throughout the site */
+/* Primary card surface treatment throughout the site (translucent glass so cursor animation shines through) */
 .glass-card {
-  background-color: var(--color-surface);
+  background-color: color-mix(in srgb, var(--color-surface) 52%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-soft);
   transition:

@@ -78,7 +78,7 @@ export function ContactForm() {
       transition={{ duration: 0.45, delay: 0.08 }}
       onSubmit={handleSubmit}
       noValidate
-      className="relative w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] sm:p-8 lg:p-9"
+      className="glass-card relative w-full rounded-2xl border border-[var(--color-border)] p-6 shadow-[var(--shadow-soft)] sm:p-8 lg:p-9"
     >
       <div className="mb-6">
         <h3 className="font-[var(--font-display)] text-xl font-bold tracking-tight text-[var(--color-ink)] sm:text-2xl">

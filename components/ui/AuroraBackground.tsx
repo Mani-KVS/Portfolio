@@ -361,38 +361,41 @@ export function AuroraBackground({
   }
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
-    >
-      {/* Stationary subtle ambient radial glow (keeps 85%+ of screen plain #07111F in dark / #FFFFFF in light) */}
+    <>
       <div
-        className="absolute inset-0 transition-opacity duration-600"
-        style={{
-          background:
-            "radial-gradient(circle 680px at 74% 24%, var(--ambient-stationary-glow), transparent 72%)",
-        }}
-      />
-
-      {/* Soft ambient radial backlight following cursor / touch */}
-      {!prefersReducedMotion && (
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden select-none"
+      >
+        {/* Stationary subtle ambient radial glow (keeps 85%+ of screen plain #07111F in dark / #FFFFFF in light) */}
         <div
-          ref={cursorGlowRef}
-          className="fixed left-0 top-0 h-[600px] w-[600px] rounded-full opacity-0 blur-[80px] transition-opacity duration-500 will-change-transform"
+          className="absolute inset-0 transition-opacity duration-600"
           style={{
             background:
-              "radial-gradient(circle, var(--cursor-glow-core) 0%, var(--cursor-glow-primary) 32%, transparent 72%)",
+              "radial-gradient(circle 680px at 74% 24%, var(--ambient-stationary-glow), transparent 72%)",
           }}
         />
-      )}
 
-      {/* 60fps Luminous Orb & Tapering Dotted Trail Canvas (matches reference image on cursor move & mobile touch) */}
+        {/* Soft ambient radial backlight following cursor / touch (diffuses through translucent glass cards) */}
+        {!prefersReducedMotion && (
+          <div
+            ref={cursorGlowRef}
+            className="fixed left-0 top-0 h-[600px] w-[600px] rounded-full opacity-0 blur-[80px] transition-opacity duration-500 will-change-transform"
+            style={{
+              background:
+                "radial-gradient(circle, var(--cursor-glow-core) 0%, var(--cursor-glow-primary) 32%, transparent 72%)",
+            }}
+          />
+        )}
+      </div>
+
+      {/* 60fps Luminous Orb & Tapering Dotted Trail Canvas (pointer-events-none z-30 so it is always clearly visible over glass cards) */}
       {!prefersReducedMotion && (
         <canvas
           ref={canvasRef}
-          className="pointer-events-none fixed inset-0 z-10 block"
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-30 block select-none"
         />
       )}
-    </div>
+    </>
   );
 }
