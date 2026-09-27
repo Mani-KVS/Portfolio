@@ -27,7 +27,7 @@ export function FloatingInput({
           props.onBlur?.(e);
         }}
         placeholder=" "
-        className={`peer w-full rounded-xl border bg-[var(--color-bg)] px-4 pt-5 pb-2 text-sm text-[var(--color-ink)] outline-none transition-colors ${
+        className={`contact-field-input peer w-full rounded-xl border bg-[var(--color-bg)] px-4 pt-5 pb-2 text-sm text-[var(--color-ink)] outline-none ${
           error
             ? "border-red-500"
             : "border-[var(--color-border)] focus:border-[var(--color-accent-solid)]"
@@ -72,7 +72,7 @@ export function FloatingTextarea({
         }}
         placeholder=" "
         rows={props.rows ?? 4}
-        className={`peer w-full resize-none rounded-xl border bg-[var(--color-bg)] px-4 pt-5 pb-2 text-sm text-[var(--color-ink)] outline-none transition-colors ${
+        className={`contact-field-input peer w-full resize-none rounded-xl border bg-[var(--color-bg)] px-4 pt-5 pb-2 text-sm text-[var(--color-ink)] outline-none ${
           error
             ? "border-red-500"
             : "border-[var(--color-border)] focus:border-[var(--color-accent-solid)]"
