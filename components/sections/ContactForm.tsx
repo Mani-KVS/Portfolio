@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import { motion } from "framer-motion";
 import { Send, CheckCircle2 } from "lucide-react";
-import { FloatingInput, FloatingTextarea } from "@/components/ui/FloatingField";
 
 interface FormValues {
   name: string;
@@ -13,6 +12,7 @@ interface FormValues {
 }
 
 export function ContactForm() {
+  const formId = useId();
   const [values, setValues] = useState<FormValues>({
     name: "",
     email: "",
@@ -26,7 +26,8 @@ export function ContactForm() {
   function validate(): boolean {
     const next: Partial<FormValues> = {};
     if (!values.name.trim()) next.name = "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) next.email = "Please enter a valid email.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
+      next.email = "Please enter a valid email.";
     if (!values.subject.trim()) next.subject = "Please enter a subject.";
     if (!values.message.trim() || values.message.trim().length < 5)
       next.message = "Message should be at least 5 characters.";
@@ -66,79 +67,147 @@ export function ContactForm() {
     }
   }
 
+  const inputBaseClass =
+    "contact-field-input w-full rounded-xl border bg-[var(--color-bg)] px-4 py-3 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-ink-muted)]/70 outline-none";
+
   return (
     <motion.form
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.45, delay: 0.1 }}
+      transition={{ duration: 0.45, delay: 0.08 }}
       onSubmit={handleSubmit}
-      className="glass-card relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/95 p-6 shadow-[var(--shadow-soft)] backdrop-blur-sm sm:p-8"
+      noValidate
+      className="relative w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-soft)] sm:p-8 lg:p-9"
     >
       <div className="mb-6">
-        <h3 className="font-[var(--font-display)] text-lg font-bold tracking-tight text-[var(--color-ink)] sm:text-xl">
-          Send a Direct Message
+        <h3 className="font-[var(--font-display)] text-xl font-bold tracking-tight text-[var(--color-ink)] sm:text-2xl">
+          Contact Form
         </h3>
-        <p className="mt-1 text-xs text-[var(--color-ink-muted)] sm:text-sm">
-          Fill out the form below and I&apos;ll get back to you as soon as possible.
+        <p className="mt-1.5 text-xs text-[var(--color-ink-muted)] sm:text-sm">
+          Have a question, project idea, or opportunity? Send me a message directly.
         </p>
       </div>
 
       <div className="space-y-4">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <FloatingInput
-            label="Name"
+        {/* Name */}
+        <div>
+          <label
+            htmlFor={`${formId}-name`}
+            className="mb-1.5 block text-xs font-semibold tracking-wide text-[var(--color-ink)]"
+          >
+            Name
+          </label>
+          <input
+            id={`${formId}-name`}
             name="name"
+            type="text"
             autoComplete="name"
+            placeholder="Your full name"
             value={values.name}
-            error={errors.name}
             onChange={(e) => setValues((v) => ({ ...v, name: e.target.value }))}
+            className={`${inputBaseClass} ${
+              errors.name ? "border-red-500" : "border-[var(--color-border)]"
+            }`}
           />
-          <FloatingInput
-            label="Email"
+          {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
+        </div>
+
+        {/* Email */}
+        <div>
+          <label
+            htmlFor={`${formId}-email`}
+            className="mb-1.5 block text-xs font-semibold tracking-wide text-[var(--color-ink)]"
+          >
+            Email
+          </label>
+          <input
+            id={`${formId}-email`}
             name="email"
             type="email"
             autoComplete="email"
+            placeholder="your.email@example.com"
             value={values.email}
-            error={errors.email}
             onChange={(e) => setValues((v) => ({ ...v, email: e.target.value }))}
+            className={`${inputBaseClass} ${
+              errors.email ? "border-red-500" : "border-[var(--color-border)]"
+            }`}
           />
+          {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
         </div>
 
-        <FloatingInput
-          label="Subject"
-          name="subject"
-          value={values.subject}
-          error={errors.subject}
-          onChange={(e) => setValues((v) => ({ ...v, subject: e.target.value }))}
-        />
+        {/* Subject */}
+        <div>
+          <label
+            htmlFor={`${formId}-subject`}
+            className="mb-1.5 block text-xs font-semibold tracking-wide text-[var(--color-ink)]"
+          >
+            Subject
+          </label>
+          <input
+            id={`${formId}-subject`}
+            name="subject"
+            type="text"
+            placeholder="What is this regarding?"
+            value={values.subject}
+            onChange={(e) => setValues((v) => ({ ...v, subject: e.target.value }))}
+            className={`${inputBaseClass} ${
+              errors.subject ? "border-red-500" : "border-[var(--color-border)]"
+            }`}
+          />
+          {errors.subject && (
+            <p className="mt-1 text-xs text-red-500">{errors.subject}</p>
+          )}
+        </div>
 
-        <FloatingTextarea
-          label="Message"
-          name="message"
-          rows={5}
-          value={values.message}
-          error={errors.message}
-          onChange={(e) => setValues((v) => ({ ...v, message: e.target.value }))}
-        />
+        {/* Message */}
+        <div>
+          <label
+            htmlFor={`${formId}-message`}
+            className="mb-1.5 block text-xs font-semibold tracking-wide text-[var(--color-ink)]"
+          >
+            Message
+          </label>
+          <textarea
+            id={`${formId}-message`}
+            name="message"
+            rows={5}
+            placeholder="Write your message here..."
+            value={values.message}
+            onChange={(e) => setValues((v) => ({ ...v, message: e.target.value }))}
+            className={`${inputBaseClass} resize-none ${
+              errors.message ? "border-red-500" : "border-[var(--color-border)]"
+            }`}
+          />
+          {errors.message && (
+            <p className="mt-1 text-xs text-red-500">{errors.message}</p>
+          )}
+        </div>
       </div>
 
       <button
         type="submit"
         disabled={status === "sending"}
-        className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-accent-solid)] px-5 py-3.5 text-sm font-semibold text-white shadow-[0_4px_14px_0_var(--color-glow)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_22px_-2px_var(--color-glow)] active:translate-y-0 active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60"
+        className="gradient-button mt-6 flex min-h-[48px] w-full cursor-pointer items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow-[0_4px_16px_0_var(--color-glow)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_-2px_var(--color-glow)] active:translate-y-0 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"
       >
-        {status === "sent" ? <CheckCircle2 size={16} /> : <Send size={16} />}
-        {status === "sending" ? "Sending..." : status === "sent" ? "Message Sent" : "Send Message"}
+        {status === "sent" ? <CheckCircle2 size={17} /> : <Send size={17} />}
+        <span>
+          {status === "sending"
+            ? "Sending..."
+            : status === "sent"
+              ? "Message Sent"
+              : "Send Message"}
+        </span>
       </button>
 
       {status === "sent" && (
-        <p className="mt-3 text-center text-xs font-medium text-emerald-600 dark:text-emerald-400">
+        <p className="mt-3.5 text-center text-xs font-medium text-emerald-600 dark:text-emerald-400">
           Thanks for reaching out — I&apos;ll reply soon!
         </p>
       )}
-      {status === "error" && <p className="mt-3 text-center text-xs text-red-500">{errorMsg}</p>}
+      {status === "error" && (
+        <p className="mt-3.5 text-center text-xs text-red-500">{errorMsg}</p>
+      )}
     </motion.form>
   );
 }
-

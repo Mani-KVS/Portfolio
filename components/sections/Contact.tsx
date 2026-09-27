@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, MapPin, Phone, Code2, ArrowUpRight } from "lucide-react";
+import { Github, Linkedin, Mail, MapPin, Phone, Code2 } from "lucide-react";
 import { HelloCharacter } from "@/components/ui/HelloCharacter";
 import { ContactForm } from "@/components/sections/ContactForm";
 import type { SiteContent } from "@/lib/content";
@@ -13,42 +13,15 @@ export function Contact({
   contact: SiteContent["contact"];
   location: string;
 }) {
-  const directContactItems = [
-    {
-      icon: Mail,
-      title: "Email",
-      label: contact.email,
-      href: `mailto:${contact.email}`,
-    },
-    ...(contact.phone
-      ? [
-          {
-            icon: Phone,
-            title: "Phone",
-            label: contact.phone,
-            href: `tel:${contact.phone}`,
-          },
-        ]
-      : []),
-    {
-      icon: MapPin,
-      title: "Location",
-      label: location,
-      href: undefined,
-    },
-  ];
-
   const socialLinks = [
     {
       icon: Linkedin,
       title: "LinkedIn",
-      label: "LinkedIn",
       href: contact.linkedin,
     },
     {
       icon: Github,
       title: "GitHub",
-      label: "GitHub",
       href: contact.github,
     },
     ...(contact.leetcode
@@ -56,7 +29,6 @@ export function Contact({
           {
             icon: Code2,
             title: "LeetCode",
-            label: "LeetCode",
             href: contact.leetcode,
           },
         ]
@@ -66,16 +38,19 @@ export function Contact({
   return (
     <section
       id="contact"
-      className="relative overflow-hidden border-t border-[var(--color-border)] bg-[var(--color-bg-soft)]/55 px-5 py-20 sm:py-24"
+      aria-labelledby="contact-heading"
+      className="relative overflow-hidden border-t border-[var(--color-border)] bg-[var(--color-bg-soft)]/45 px-5 py-20 sm:py-24 lg:py-28"
     >
-      {/* Extremely faint technical dot pattern & subtle blue/teal ambient glow */}
+      {/* Animated technical background matching portfolio visual language */}
       <div
         aria-hidden="true"
         className="hero-dot-grid pointer-events-none absolute inset-0 opacity-45"
       />
+
+      {/* Soft blue & teal radial ambient glows */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -left-24 top-12 h-80 w-80 rounded-full blur-3xl"
+        className="pointer-events-none absolute -left-28 top-10 h-96 w-96 rounded-full blur-3xl"
         style={{
           background:
             "radial-gradient(circle, var(--hero-blue-glow) 0%, transparent 70%)",
@@ -83,45 +58,79 @@ export function Contact({
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-24 bottom-8 h-80 w-80 rounded-full blur-3xl"
+        className="pointer-events-none absolute -right-28 bottom-10 h-96 w-96 rounded-full blur-3xl"
         style={{
           background:
             "radial-gradient(circle, var(--hero-teal-glow) 0%, transparent 70%)",
         }}
       />
 
+      {/* Thin flowing curved wave lines */}
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 1440 420"
+        fill="none"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 w-full opacity-55"
+      >
+        <path
+          d="M-80 260 C 320 180, 680 340, 1120 230 C 1300 185, 1420 210, 1520 240"
+          stroke="var(--hero-wave-primary)"
+          strokeWidth="1.25"
+          className="animate-hero-wave"
+        />
+        <path
+          d="M-60 320 C 360 240, 760 370, 1180 270 C 1340 235, 1440 260, 1540 290"
+          stroke="var(--hero-wave-secondary)"
+          strokeWidth="1.15"
+          className="animate-hero-wave-reverse"
+        />
+      </svg>
+
+      {/* Few subtle floating particles */}
+      <span
+        aria-hidden="true"
+        className="animate-hero-particle pointer-events-none absolute left-[12%] top-[18%] h-2 w-2 rounded-full bg-sky-400/35"
+      />
+      <span
+        aria-hidden="true"
+        style={{ animationDelay: "-5s" }}
+        className="animate-hero-particle pointer-events-none absolute left-[42%] bottom-[16%] h-1.5 w-1.5 rounded-full bg-teal-400/35"
+      />
+      <span
+        aria-hidden="true"
+        style={{ animationDelay: "-9s" }}
+        className="animate-hero-particle pointer-events-none absolute right-[14%] top-[22%] h-2 w-2 rounded-full bg-blue-400/30"
+      />
+
       <div className="relative z-10 mx-auto max-w-6xl">
-        <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-12">
-          {/* LEFT SIDE: Let's Connect + Animated Hello Character + Contact Info + Socials */}
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+          {/* LEFT COLUMN (45-50% width on desktop): Heading + Description + Robot + Contact Details + Social Icons */}
           <div className="flex flex-col items-center text-center lg:col-span-5 lg:items-start lg:text-left">
-            <motion.div
+            <motion.h2
+              id="contact-heading"
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.4 }}
+              className="font-[var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-ink)] sm:text-4xl lg:text-[2.65rem]"
             >
-              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-accent-solid)] shadow-2xs">
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent-solid)]" />
-                Contact
-              </span>
-              <h2 className="mt-3 font-[var(--font-display)] text-3xl font-bold tracking-tight text-[var(--color-ink)] sm:text-4xl">
-                Let&apos;s Connect!
-              </h2>
-            </motion.div>
+              Let&apos;s <span className="text-gradient">Connect!</span>
+            </motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.4, delay: 0.06 }}
-              className="mt-3 max-w-md text-sm leading-relaxed text-[var(--color-ink-muted)] sm:text-base"
+              className="mt-3.5 max-w-md text-sm leading-relaxed text-[var(--color-ink-muted)] sm:text-base"
             >
-              I&apos;m always open to discussing new opportunities, projects,
-              collaborations, and ideas. Feel free to reach out — I&apos;d love
-              to hear from you.
+              I&apos;m always excited to connect, collaborate, and explore new
+              ideas or opportunities. Feel free to reach out — I&apos;d love to
+              hear from you.
             </motion.p>
 
-            {/* Animated Hello Character */}
+            {/* Animated Hello Robot */}
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 10 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
@@ -132,57 +141,48 @@ export function Contact({
               <HelloCharacter />
             </motion.div>
 
-            {/* Existing Contact Information (Email, Phone, Location) */}
+            {/* Existing Contact Details (Email, Phone, Location) + Social Icons */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.4, delay: 0.18 }}
-              className="mt-2 w-full space-y-2.5 text-left"
+              className="mt-2 flex w-full flex-col items-center space-y-3 lg:items-start"
             >
-              {directContactItems.map((item) => {
-                const inner = (
-                  <>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-accent-tint)] text-[var(--color-accent-solid)] transition-transform duration-200 group-hover:scale-105">
-                      <item.icon size={16} />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-ink-muted)]">
-                        {item.title}
-                      </p>
-                      <p className="truncate text-sm font-medium text-[var(--color-ink)]">
-                        {item.label}
-                      </p>
-                    </div>
-                    {item.href && (
-                      <ArrowUpRight
-                        size={15}
-                        className="shrink-0 text-[var(--color-ink-muted)] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[var(--color-accent-solid)]"
-                      />
-                    )}
-                  </>
-                );
+              {/* Email */}
+              <a
+                href={`mailto:${contact.email}`}
+                className="group inline-flex items-center gap-3 rounded-xl px-2 py-1 text-sm font-medium text-[var(--color-ink)] transition-colors hover:text-[var(--color-accent-solid)]"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-accent-solid)] shadow-2xs transition-all duration-200 group-hover:border-[var(--color-accent-solid)] group-hover:scale-105">
+                  <Mail size={16} />
+                </span>
+                <span className="break-all sm:break-normal">{contact.email}</span>
+              </a>
 
-                return item.href ? (
-                  <a
-                    key={item.title}
-                    href={item.href}
-                    className="glass-card glow-ring group flex items-center gap-3.5 rounded-xl px-4 py-2.5 transition-all duration-200 hover:border-[var(--color-accent-solid)]"
-                  >
-                    {inner}
-                  </a>
-                ) : (
-                  <div
-                    key={item.title}
-                    className="glass-card flex items-center gap-3.5 rounded-xl px-4 py-2.5"
-                  >
-                    {inner}
-                  </div>
-                );
-              })}
+              {/* Phone (if present in existing portfolio data) */}
+              {contact.phone && (
+                <a
+                  href={`tel:${contact.phone}`}
+                  className="group inline-flex items-center gap-3 rounded-xl px-2 py-1 text-sm font-medium text-[var(--color-ink)] transition-colors hover:text-[var(--color-accent-solid)]"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-accent-solid)] shadow-2xs transition-all duration-200 group-hover:border-[var(--color-accent-solid)] group-hover:scale-105">
+                    <Phone size={16} />
+                  </span>
+                  <span>{contact.phone}</span>
+                </a>
+              )}
 
-              {/* Social Links Row (LinkedIn, GitHub, LeetCode) */}
-              <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2 lg:justify-start">
+              {/* Location */}
+              <div className="inline-flex items-center gap-3 px-2 py-1 text-sm font-medium text-[var(--color-ink-muted)]">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-accent-solid)] shadow-2xs">
+                  <MapPin size={16} />
+                </span>
+                <span>{location}</span>
+              </div>
+
+              {/* Social Icon Buttons */}
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2 lg:justify-start">
                 {socialLinks.map((social) => (
                   <a
                     key={social.title}
@@ -190,24 +190,17 @@ export function Contact({
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.title}
-                    className="glass-card glow-ring group inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold text-[var(--color-ink)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--color-accent-solid)] hover:text-[var(--color-accent-solid)]"
+                    title={social.title}
+                    className="group inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-ink-muted)] shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:border-[var(--color-accent-solid)] hover:text-[var(--color-accent-solid)] hover:shadow-[0_4px_14px_0_var(--color-glow)]"
                   >
-                    <social.icon
-                      size={15}
-                      className="text-[var(--color-accent-solid)] transition-transform duration-200 group-hover:scale-110"
-                    />
-                    <span>{social.label}</span>
-                    <ArrowUpRight
-                      size={13}
-                      className="text-[var(--color-ink-muted)] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[var(--color-accent-solid)]"
-                    />
+                    <social.icon size={17} />
                   </a>
                 ))}
               </div>
             </motion.div>
           </div>
 
-          {/* RIGHT SIDE: Clean Professional Contact Form */}
+          {/* RIGHT COLUMN (50-55% width on desktop): Contact Form */}
           <div className="w-full lg:col-span-7">
             <ContactForm />
           </div>
